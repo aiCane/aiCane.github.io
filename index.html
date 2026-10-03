@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yilin Zhang — Personal Website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;1,14..32,400&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ===== CSS Variables (from DESIGN.md) ===== */
+    :root {
+      --primary: #cc785c;
+      --primary-active: #a9583e;
+      --primary-disabled: #e6dfd8;
+      --ink: #141413;
+      --body: #3d3d3a;
+      --body-strong: #252523;
+      --muted: #6c6a64;
+      --muted-soft: #8e8b82;
+      --hairline: #e6dfd8;
+      --hairline-soft: #ebe6df;
+      --canvas: #faf9f5;
+      --surface-soft: #f5f0e8;
+      --surface-card: #efe9de;
+      --surface-cream-strong: #e8e0d2;
+      --surface-dark: #181715;
+      --surface-dark-elevated: #252320;
+      --surface-dark-soft: #1f1e1b;
+      --on-primary: #ffffff;
+      --on-dark: #faf9f5;
+      --on-dark-soft: #a09d96;
+      --accent-teal: #5db8a6;
+      --accent-amber: #e8a55a;
+
+      --font-display: 'EB Garamond', 'Cormorant Garamond', Garamond, 'Times New Roman', serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-code: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+
+      --rounded-xs: 4px;
+      --rounded-sm: 6px;
+      --rounded-md: 8px;
+      --rounded-lg: 12px;
+      --rounded-xl: 16px;
+      --rounded-pill: 9999px;
+
+      --spacing-section: 96px;
+      --spacing-xxl: 48px;
+      --spacing-xl: 32px;
+      --spacing-lg: 24px;
+      --spacing-md: 16px;
+      --spacing-sm: 12px;
+      --spacing-xs: 8px;
+      --spacing-xxs: 4px;
+    }
+
+    /* ===== Reset ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--body);
+      background-color: var(--canvas);
+    }
+
+    /* ===== Utility ===== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-xl);
+    }
+
+    /* ===== Top Navigation ===== */
+    .top-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 64px; background: var(--canvas);
+      display: flex; align-items: center;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .top-nav.scrolled { border-bottom-color: var(--hairline); }
+    .top-nav .container {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--ink);
+    }
+    .nav-spike {
+      width: 24px; height: 24px; flex-shrink: 0;
+    }
+    .nav-wordmark {
+      font-family: var(--font-display);
+      font-size: 22px; font-weight: 500;
+      line-height: 1; color: var(--ink);
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: var(--spacing-xl);
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 14px; font-weight: 500;
+      line-height: 1.4; color: var(--ink);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: var(--font-body); font-size: 14px; font-weight: 500;
+      line-height: 1; color: var(--on-primary);
+      background: var(--primary); border: none;
+      padding: 12px 20px; height: 40px;
+      border-radius: var(--rounded-md);
+      text-decoration: none; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--primary-active); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--ink); border-radius: 1px;
+    }
+
+    /* ===== Section ===== */
+    .section { padding: var(--spacing-section) 0; }
+    .section-label {
+      font-family: var(--font-body);
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--primary); margin-bottom: var(--spacing-md);
+    }
+    .section-headline {
+      font-family: var(--font-display);
+      font-size: 48px; font-weight: 400;
+      line-height: 1.1; letter-spacing: -1px;
+      color: var(--ink); margin-bottom: var(--spacing-lg);
+    }
+    .section-subhead {
+      font-family: var(--font-body);
+      font-size: 18px; font-weight: 400; line-height: 1.55;
+      color: var(--body); max-width: 600px;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      padding: calc(64px + var(--spacing-section)) 0 var(--spacing-section);
+      background: var(--canvas);
+    }
+    .hero .container {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-xxl); align-items: center;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 12px; font-weight: 500; letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--on-primary); background: var(--primary);
+      padding: 4px 12px; border-radius: var(--rounded-pill);
+      margin-bottom: var(--spacing-lg);
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: 64px; font-weight: 400;
+      line-height: 1.05; letter-spacing: -1.5px;
+      color: var(--ink); margin-bottom: var(--spacing-lg);
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--primary);
+    }
+    .hero-lead {
+      font-family: var(--font-body);
+      font-size: 18px; font-weight: 400; line-height: 1.55;
+      color: var(--body); max-width: 480px;
+      margin-bottom: var(--spacing-xl);
+    }
+    .hero-actions {
+      display: flex; gap: var(--spacing-sm); flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: var(--font-body); font-size: 14px; font-weight: 500;
+      line-height: 1; color: var(--on-primary);
+      background: var(--primary); border: none;
+      padding: 12px 20px; height: 40px;
+      border-radius: var(--rounded-md);
+      text-decoration: none; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--primary-active); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: var(--font-body); font-size: 14px; font-weight: 500;
+      line-height: 1; color: var(--ink);
+      background: var(--canvas); border: 1px solid var(--hairline);
+      padding: 12px 20px; height: 40px;
+      border-radius: var(--rounded-md);
+      text-decoration: none; cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--muted); }
+    .hero-illustration {
+      background: var(--surface-dark);
+      border-radius: var(--rounded-xl);
+      padding: var(--spacing-xl);
+      min-height: 360px;
+      display: flex; flex-direction: column;
+      font-family: var(--font-code); font-size: 14px;
+      line-height: 1.6; color: var(--on-dark-soft);
+      overflow: hidden;
+    }
+    .code-window {
+      display: flex; flex-direction: column; height: 100%;
+    }
+    .code-dots {
+      display: flex; gap: 8px; margin-bottom: var(--spacing-lg);
+    }
+    .code-dots span {
+      width: 12px; height: 12px; border-radius: 50%;
+    }
+    .code-dots span:nth-child(1) { background: #c64545; }
+    .code-dots span:nth-child(2) { background: #d4a017; }
+    .code-dots span:nth-child(3) { background: #5db872; }
+    .code-content {
+      font-family: var(--font-code); font-size: 14px;
+      line-height: 1.8; color: var(--on-dark-soft);
+      flex: 1;
+    }
+    .code-line { display: flex; gap: var(--spacing-md); }
+    .code-ln {
+      color: var(--on-dark-soft); opacity: 0.4;
+      min-width: 24px; text-align: right; user-select: none;
+    }
+    .code-kw  { color: #cc785c; }
+    .code-str { color: #5db8a6; }
+    .code-fn  { color: #e8a55a; }
+    .code-cmt { color: #6c6a64; font-style: italic; }
+    .code-val { color: #a09d96; }
+
+    /* ===== Feature Cards Grid ===== */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-lg);
+    }
+    .feature-card {
+      background: var(--surface-card);
+      border-radius: var(--rounded-lg);
+      padding: var(--spacing-xl);
+    }
+    .feature-card-icon {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: var(--spacing-md);
+      color: var(--primary);
+    }
+    .feature-card h3 {
+      font-family: var(--font-body);
+      font-size: 18px; font-weight: 500;
+      line-height: 1.4; color: var(--ink);
+      margin-bottom: var(--spacing-xs);
+    }
+    .feature-card p {
+      font-family: var(--font-body);
+      font-size: 16px; font-weight: 400;
+      line-height: 1.55; color: var(--body);
+    }
+
+    /* ===== Dark Product Card ===== */
+    .dark-card {
+      background: var(--surface-dark);
+      border-radius: var(--rounded-lg);
+      padding: var(--spacing-xl);
+      color: var(--on-dark);
+    }
+    .dark-card h3 {
+      font-family: var(--font-body);
+      font-size: 18px; font-weight: 500;
+      line-height: 1.4; color: var(--on-dark);
+      margin-bottom: var(--spacing-sm);
+    }
+    .dark-card p, .dark-card li {
+      font-size: 14px; color: var(--on-dark-soft);
+      line-height: 1.55;
+    }
+    .dark-card ul { list-style: none; padding: 0; }
+    .dark-card li::before {
+      content: "—"; margin-right: var(--spacing-xs);
+      color: var(--primary);
+    }
+
+    /* ===== Education ===== */
+    .edu-block {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-xl);
+    }
+    .edu-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-lg);
+      padding: var(--spacing-xl);
+    }
+    .edu-card .school {
+      font-family: var(--font-display);
+      font-size: 28px; font-weight: 400;
+      line-height: 1.2; letter-spacing: -0.3px;
+      color: var(--ink); margin-bottom: var(--spacing-xs);
+    }
+    .edu-card .degree {
+      font-family: var(--font-body);
+      font-size: 16px; font-weight: 500;
+      color: var(--body-strong); margin-bottom: var(--spacing-xs);
+    }
+    .edu-card .dates {
+      font-size: 13px; color: var(--muted);
+      margin-bottom: var(--spacing-md);
+    }
+    .edu-card .note {
+      font-size: 14px; color: var(--muted);
+    }
+
+    /* ===== Timeline ===== */
+    .timeline { display: flex; flex-direction: column; gap: var(--spacing-xl); }
+    .timeline-item {
+      display: grid; grid-template-columns: 180px 1fr;
+      gap: var(--spacing-xl); align-items: start;
+    }
+    .timeline-meta { text-align: right; }
+    .timeline-period {
+      font-family: var(--font-body);
+      font-size: 13px; font-weight: 500; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: var(--spacing-xxs);
+    }
+    .timeline-badge {
+      display: inline-block;
+      font-size: 12px; font-weight: 500; letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 12px; border-radius: var(--rounded-pill);
+      background: var(--surface-card); color: var(--ink);
+    }
+    .timeline-badge.coral {
+      background: var(--primary); color: var(--on-primary);
+    }
+    .timeline-content h3 {
+      font-family: var(--font-display);
+      font-size: 28px; font-weight: 400;
+      line-height: 1.2; letter-spacing: -0.3px;
+      color: var(--ink); margin-bottom: var(--spacing-xxs);
+    }
+    .timeline-content .org {
+      font-size: 16px; font-weight: 500; color: var(--body-strong);
+      margin-bottom: var(--spacing-sm);
+    }
+    .timeline-content p {
+      font-size: 16px; color: var(--body); line-height: 1.55;
+      margin-bottom: var(--spacing-sm);
+    }
+    .timeline-content ul {
+      list-style: none; padding: 0;
+    }
+    .timeline-content li {
+      font-size: 14px; color: var(--body);
+      line-height: 1.55; padding-left: var(--spacing-md);
+      position: relative;
+      margin-bottom: var(--spacing-xxs);
+    }
+    .timeline-content li::before {
+      content: ""; position: absolute; left: 0; top: 10px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--primary);
+    }
+
+    /* ===== Skills ===== */
+    .skills-band { background: var(--surface-dark); color: var(--on-dark); }
+    .skills-band .section-label { color: var(--accent-amber); }
+    .skills-band .section-headline { color: var(--on-dark); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-lg);
+    }
+    .skill-group h3 {
+      font-family: var(--font-body);
+      font-size: 14px; font-weight: 500; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--primary);
+      margin-bottom: var(--spacing-md);
+    }
+    .skill-tags {
+      display: flex; flex-wrap: wrap; gap: var(--spacing-xs);
+    }
+    .skill-tag {
+      display: inline-block;
+      font-family: var(--font-code); font-size: 13px;
+      padding: 4px 10px;
+      border-radius: var(--rounded-pill);
+      background: var(--surface-dark-elevated);
+      color: var(--on-dark-soft);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .skill-tag.highlight {
+      background: rgba(204,120,92,0.15); color: var(--primary);
+      border-color: rgba(204,120,92,0.25);
+    }
+
+    /* ===== Projects ===== */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-lg);
+    }
+    .project-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-lg);
+      padding: var(--spacing-xl);
+      transition: border-color 0.2s;
+    }
+    .project-card:hover { border-color: var(--primary); }
+    .project-card h3 {
+      font-family: var(--font-display);
+      font-size: 22px; font-weight: 400;
+      line-height: 1.3; color: var(--ink);
+      margin-bottom: var(--spacing-xs);
+    }
+    .project-card .role {
+      font-size: 13px; font-weight: 500; color: var(--muted);
+      margin-bottom: var(--spacing-md);
+    }
+    .project-card p, .project-card li {
+      font-size: 14px; color: var(--body); line-height: 1.55;
+    }
+    .project-card ul { list-style: none; padding: 0; }
+    .project-card li::before {
+      content: "→"; margin-right: var(--spacing-xs); color: var(--primary);
+    }
+    .project-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 14px; font-weight: 500; color: var(--primary);
+      text-decoration: none; margin-top: var(--spacing-md);
+    }
+    .project-link:hover { text-decoration: underline; }
+    .project-link svg { width: 14px; height: 14px; }
+
+    /* ===== CTA Band ===== */
+    .cta-band {
+      background: var(--primary);
+      border-radius: var(--rounded-lg);
+      padding: 64px;
+      text-align: center;
+      color: var(--on-primary);
+    }
+    .cta-band h2 {
+      font-family: var(--font-display);
+      font-size: 36px; font-weight: 400;
+      line-height: 1.15; letter-spacing: -0.5px;
+      margin-bottom: var(--spacing-md);
+    }
+    .cta-band p {
+      font-size: 18px; opacity: 0.9;
+      margin-bottom: var(--spacing-xl);
+    }
+    .btn-on-coral {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: var(--font-body); font-size: 14px; font-weight: 500;
+      line-height: 1; color: var(--primary);
+      background: var(--canvas); border: none;
+      padding: 12px 20px; height: 40px;
+      border-radius: var(--rounded-md);
+      text-decoration: none; cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-on-coral:hover { opacity: 0.9; }
+
+    /* ===== Footer ===== */
+    .footer {
+      background: var(--surface-dark);
+      color: var(--on-dark-soft);
+      padding: 64px 0 var(--spacing-xl);
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: var(--spacing-xl);
+      margin-bottom: var(--spacing-xxl);
+    }
+    .footer-brand {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: var(--spacing-md);
+    }
+    .footer-brand .nav-wordmark { color: var(--on-dark); }
+    .footer p { font-size: 14px; line-height: 1.55; }
+    .footer h4 {
+      font-family: var(--font-body);
+      font-size: 13px; font-weight: 500; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--on-dark);
+      margin-bottom: var(--spacing-md);
+    }
+    .footer a {
+      display: block; font-size: 14px; color: var(--on-dark-soft);
+      text-decoration: none; line-height: 2.2; transition: color 0.2s;
+    }
+    .footer a:hover { color: var(--on-dark); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: var(--spacing-lg);
+      display: flex; justify-content: space-between;
+      font-size: 13px; color: var(--on-dark-soft);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1024px) {
+      .hero h1 { font-size: 48px; }
+      .section-headline { font-size: 36px; }
+      .cards-grid { grid-template-columns: repeat(2, 1fr); }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .projects-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .timeline-item { grid-template-columns: 120px 1fr; gap: var(--spacing-lg); }
+    }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 36px; }
+      .section-headline { font-size: 28px; }
+      .section { padding: 64px 0; }
+      .hero { padding: calc(64px + 48px) 0 48px; }
+      .hero .container { grid-template-columns: 1fr; }
+      .hero-illustration { min-height: 240px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .edu-block { grid-template-columns: 1fr; }
+      .timeline-item { grid-template-columns: 1fr; gap: var(--spacing-xs); }
+      .timeline-meta { text-align: left; display: flex; gap: var(--spacing-sm); align-items: center; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .cta-band { padding: var(--spacing-xxl) var(--spacing-xl); }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: var(--spacing-xs); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav" id="topNav">
+    <div class="container">
+      <a href="#" class="nav-brand">
+        <svg class="nav-spike" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z" fill="currentColor"/>
+          <circle cx="12" cy="12" r="2.5" fill="currentColor"/>
+        </svg>
+        <span class="nav-wordmark">Yilin Zhang</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact" class="nav-cta">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="about">
+    <div class="container">
+      <div>
+        <span class="hero-tag">CS × Robotics</span>
+        <h1>Hi, I'm <em>Yilin</em>.<br>Student, Builder,<br>Problem Solver.</h1>
+        <p class="hero-lead">
+          Computer Science and Robotics undergraduate at Ocean University of China
+          and Heriot-Watt University. I build AI systems, deploy servers, and
+          write code that matters.
+        </p>
+        <div class="hero-actions">
+          <a href="https://github.com/aiCane" class="btn-primary" target="_blank" rel="noopener">GitHub</a>
+          <a href="mailto:zyl8820@stu.ouc.edu.cn" class="btn-secondary">Email Me</a>
+        </div>
+      </div>
+      <div class="hero-illustration">
+        <div class="code-window">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <div class="code-content">
+            <div class="code-line"><span class="code-ln">1</span><span class="code-cmt">// yilin.h</span></div>
+            <div class="code-line"><span class="code-ln">2</span></div>
+            <div class="code-line"><span class="code-ln">3</span><span class="code-kw">const</span> <span class="code-fn">student_t</span> yilin = {</div>
+            <div class="code-line"><span class="code-ln">4</span>  .name      = <span class="code-str">"Yilin Zhang"</span>,</div>
+            <div class="code-line"><span class="code-ln">5</span>  .school     = <span class="code-str">"OUC &amp; HWU"</span>,</div>
+            <div class="code-line"><span class="code-ln">6</span>  .majors     = {<span class="code-str">"CS"</span>, <span class="code-str">"Robotics"</span>},</div>
+            <div class="code-line"><span class="code-ln">7</span>  .interests  = <span class="code-str">"AI, ROS, Systems"</span>,</div>
+            <div class="code-line"><span class="code-ln">8</span>  .status     = <span class="code-val">STATUS_BUILDING</span>,</div>
+            <div class="code-line"><span class="code-ln">9</span>};</div>
+            <div class="code-line"><span class="code-ln">10</span></div>
+            <div class="code-line"><span class="code-ln">11</span><span class="code-cmt">// INTJ-T · MCM Winner · HSD Member</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section class="section" id="education" style="background: var(--surface-soft);">
+    <div class="container">
+      <div class="section-label">Education</div>
+      <h2 class="section-headline">Dual-degree, dual perspective.</h2>
+      <p class="section-subhead" style="margin-bottom: var(--spacing-xxl);">
+        Pursuing a joint program in Computer Science and Robotics across two continents.
+      </p>
+      <div class="edu-block">
+        <div class="edu-card">
+          <div class="school">Ocean University of China</div>
+          <div class="degree">B.Sc. Computer Science &amp; Technology</div>
+          <div class="dates">2023.9 — 2027.6</div>
+          <div class="note">Software Development · Data Structures &amp; Algorithms</div>
+        </div>
+        <div class="edu-card">
+          <div class="school">Heriot-Watt University</div>
+          <div class="degree">B.Sc. Robotics</div>
+          <div class="dates">2023 — 2027</div>
+          <div class="note">Intelligent Robotics · Robotic Systems Science</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="section" id="experience">
+    <div class="container">
+      <div class="section-label">Experience</div>
+      <h2 class="section-headline">Where I've worked & researched.</h2>
+      <div class="timeline" style="margin-top: var(--spacing-xxl);">
+        <!-- Research -->
+        <div class="timeline-item">
+          <div class="timeline-meta">
+            <div class="timeline-period">2025.10 — Present</div>
+            <span class="timeline-badge coral">Research</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Underwater Robot Path Tracking</h3>
+            <div class="org">Guangliang Li Group · Ocean University of China</div>
+            <p>
+              Investigating path tracking and obstacle avoidance algorithms
+              for underwater robots. Configured ROS Melodic on Ubuntu 18.04
+              and reproduced path tracking code from lab publications.
+            </p>
+            <ul>
+              <li>Configured full ROS environment for underwater simulation</li>
+              <li>Reproduced path tracking experiments from published papers</li>
+              <li>Next: developing obstacle avoidance multi-robot strategies</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Internship -->
+        <div class="timeline-item">
+          <div class="timeline-meta">
+            <div class="timeline-period">2024.7 — 2024.9</div>
+            <span class="timeline-badge">Internship</span>
+          </div>
+          <div class="timeline-content">
+            <h3>AI Development Assistant</h3>
+            <div class="org">Digital Center · Chengdu University of Information Technology</div>
+            <p>
+              Built a smart assistant to improve school efficiency and faculty-student experience.
+              Deployed Llama3 (8B) and Llama3.1 (70B) models on 4090 GPU / 64GB RAM hardware.
+            </p>
+            <ul>
+              <li>Deployed Llama3 &amp; Llama3.1 models (8B / 70B parameters)</li>
+              <li>Optimized API ports and connected frontend on campus intranet</li>
+              <li>Saved ~20% dev cost through innovation in process and tooling</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Robot Car -->
+        <div class="timeline-item">
+          <div class="timeline-meta">
+            <div class="timeline-period">2024.8 — Present</div>
+            <span class="timeline-badge">Project</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Robot Car Programming</h3>
+            <div class="org">DJI Python &amp; Arduino C/C++ Platforms</div>
+            <ul>
+              <li>Implemented line following, target recognition, and image processing</li>
+              <li>Trained custom YOLO model with mAP50-95 of 0.91 on custom dataset</li>
+              <li>Built and deployed models on embedded hardware platforms</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Server Ops -->
+        <div class="timeline-item">
+          <div class="timeline-meta">
+            <div class="timeline-period">2023.10 — Present</div>
+            <span class="timeline-badge">Infra</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Server Operations &amp; Game Hosting</h3>
+            <div class="org">Proxmox VE · Linux · Docker</div>
+            <ul>
+              <li>Managed 5+ game servers with 10+ DAU each via JVM &amp; system optimization</li>
+              <li>Deployed Rustdesk, TeamSpeak, Overleaf, and other OSS on public infrastructure</li>
+              <li>Proficient in MySQL backup, recovery, and performance tuning</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Dark Band -->
+  <section class="section skills-band" id="skills">
+    <div class="container">
+      <div class="section-label">Technical Skills</div>
+      <h2 class="section-headline">What I work with.</h2>
+      <div class="skills-grid" style="margin-top: var(--spacing-xxl);">
+        <div class="skill-group">
+          <h3>Languages</h3>
+          <div class="skill-tags">
+            <span class="skill-tag highlight">Java</span>
+            <span class="skill-tag highlight">Python</span>
+            <span class="skill-tag highlight">C/C++</span>
+            <span class="skill-tag">Bash</span>
+            <span class="skill-tag">Rust</span>
+            <span class="skill-tag">HTML/CSS</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Platforms</h3>
+          <div class="skill-tags">
+            <span class="skill-tag highlight">Linux</span>
+            <span class="skill-tag">Proxmox VE</span>
+            <span class="skill-tag">VMware</span>
+            <span class="skill-tag">WSL</span>
+            <span class="skill-tag">Ubuntu 18.04</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Tools &amp; DevOps</h3>
+          <div class="skill-tags">
+            <span class="skill-tag highlight">Git</span>
+            <span class="skill-tag highlight">Docker</span>
+            <span class="skill-tag">JVM</span>
+            <span class="skill-tag">Ngrok</span>
+            <span class="skill-tag">MySQL</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>AI &amp; Robotics</h3>
+          <div class="skill-tags">
+            <span class="skill-tag highlight">ROS</span>
+            <span class="skill-tag highlight">YOLO</span>
+            <span class="skill-tag">Llama3</span>
+            <span class="skill-tag">OpenCV</span>
+            <span class="skill-tag">Arduino</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Awards & Projects -->
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section-label">Awards &amp; Projects</div>
+      <h2 class="section-headline">Competitions, code, and community.</h2>
+      <div class="projects-grid" style="margin-top: var(--spacing-xxl);">
+        <div class="project-card">
+          <h3>MCM 2026 — Meritorious Winner</h3>
+          <div class="role">Lead Writer &amp; Part-time Modeler</div>
+          <p>Top 7% in the Mathematical Contest in Modeling. Awarded Meritorious Winner for outstanding modeling and writing.</p>
+        </div>
+        <div class="project-card">
+          <h3>MCM — Honorable Mention</h3>
+          <div class="role">Mathematical Modeling</div>
+          <p>Recognized with Honorable Mention in an earlier MCM competition for strong analytical work.</p>
+        </div>
+        <div class="project-card">
+          <h3>Forge DrinkingMod</h3>
+          <div class="role">Core Developer · Minecraft Mod (Java)</div>
+          <p>Led a 5-person team building a Minecraft Forge mod with Agile methodology, Git version control, and code review practices.</p>
+          <a href="https://github.com/KunLiangChen/Forge-DrinkingMod-1.20.x" class="project-link" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            View on GitHub
+          </a>
+        </div>
+        <div class="project-card">
+          <h3>LaTeX Open Source Templates</h3>
+          <div class="role">Community Contributor</div>
+          <p>Published multiple open-source LaTeX templates for English reports and Chinese course papers. Active in open-source community discussions.</p>
+        </div>
+        <div class="project-card">
+          <h3>Blue Bridge Cup</h3>
+          <div class="role">14th Competition</div>
+          <p>Participated in the 14th Blue Bridge Cup national programming competition, testing algorithms and problem-solving.</p>
+        </div>
+        <div class="project-card">
+          <h3>Huawei Campus Developer</h3>
+          <div class="role">HSD Member 2024</div>
+          <p>Member of the 2024 Huawei Campus Developer Program, engaging with developer tools and the HUAWEI ecosystem.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Band -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="cta-band">
+        <h2>Let's build something together.</h2>
+        <p>I'm always open to collaboration, research opportunities, and interesting projects. Reach out and say hi.</p>
+        <div style="display: flex; gap: var(--spacing-sm); justify-content: center; flex-wrap: wrap;">
+          <a href="mailto:zyl8820@stu.ouc.edu.cn" class="btn-on-coral">zyl8820@stu.ouc.edu.cn</a>
+          <a href="mailto:yz2137@hw.ac.uk" class="btn-on-coral">yz2137@hw.ac.uk</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z" fill="#cc785c"/>
+              <circle cx="12" cy="12" r="2.5" fill="#cc785c"/>
+            </svg>
+            <span class="nav-wordmark">Yilin Zhang</span>
+          </div>
+          <p>Computer Science × Robotics<br>Undergraduate at OUC &amp; HWU</p>
+        </div>
+        <div>
+          <h4>Education</h4>
+          <a href="#education">Ocean University of China</a>
+          <a href="#education">Heriot-Watt University</a>
+        </div>
+        <div>
+          <h4>Experience</h4>
+          <a href="#experience">AI Internship</a>
+          <a href="#experience">Research</a>
+          <a href="#experience">Projects</a>
+        </div>
+        <div>
+          <h4>Links</h4>
+          <a href="https://github.com/aiCane" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/KunLiangChen/Forge-DrinkingMod-1.20.x" target="_blank" rel="noopener">DrinkingMod</a>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <a href="mailto:zyl8820@stu.ouc.edu.cn">OUC Email</a>
+          <a href="mailto:yz2137@hw.ac.uk">HWU Email</a>
+          <a href="tel:+8618180921231">(+86) 181-8092-1231</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Yilin Zhang. Built with the Anthropic design system.</span>
+        <span>Chengdu · Qingdao · Edinburgh</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll shadow
+    const nav = document.getElementById('topNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // Mobile menu (simple anchor-based)
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.toggle('show');
+    });
+  </script>
+
+  <style>
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none; position: absolute; top: 64px; left: 0; right: 0;
+        background: var(--canvas); flex-direction: column; padding: var(--spacing-lg);
+        border-bottom: 1px solid var(--hairline); gap: var(--spacing-md);
+      }
+      .nav-links.show { display: flex; }
+    }
+  </style>
+</body>
+</html>
